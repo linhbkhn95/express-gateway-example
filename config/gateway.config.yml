@@ -1,0 +1,74 @@
+http:
+  port: 80
+# admin:
+#   port: 9876
+#   host: localhost
+apiEndpoints:
+  api:
+    host: localhost
+    paths: "/ip"
+  user:
+    host: localhost
+    paths: "/user/*"
+  shop:
+    host: localhost
+    paths: "/healthz*"
+serviceEndpoints:
+  httpbin:
+    url: "https://httpbin.org"
+  userService:
+    url: "http://localhost:1339"
+  shopService:
+    url: "http://localhost:1337"
+policies:
+  - basic-auth
+  - cors
+  - expression
+  - key-auth
+  - log
+  - oauth2
+  - proxy
+  - rate-limit
+pipelines:
+  # default:
+  #   apiEndpoints:
+  #     - api
+  #   policies:
+  #   # Uncomment `key-auth:` when instructed to in the Getting Started guide.
+  #   # - key-auth:
+  #     - proxy:
+  #         - action:
+  #             serviceEndpoint: httpbin
+  #             changeOrigin: true
+  #  - name: veoAPI
+  bin:
+    apiEndpoints:
+      - api
+    policies:
+      #  - expression:
+      #   - action:
+      #       jscode: |
+      #         if (req.url.startsWith('/discussions')) {
+      #           const slug = req.url.substr('/discussions'.length);
+      #           req.url = '/d' + slug;
+      #         }
+      #  - key-auth: # this is intentionaly disabled to allow temporary access
+      - proxy:
+          - action:
+              serviceEndpoint: httpbin
+              changeOrigin: true
+  user:
+    apiEndpoints:
+      - user
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: userService
+  shop:
+    apiEndpoints:
+      - shop
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: shopService
+              # changeOrigin: true
