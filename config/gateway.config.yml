@@ -3,16 +3,32 @@ http:
 # admin:
 #   port: 9876
 #   host: localhost
+https:
+  port: 9443
+  hostname: localhost
+  # tls:
+  #   "*.demo.io":
+  #       key: example/keys/demo.io.key.pem
+  #       cert: example/keys/demo.io.cert.pem
+  #   "api.acme.com":
+  #       key: example/keys/acme.com.key.pem
+  #       cert: example/keys/acme.com.cert.pem
+  #   "default":
+  #       key: example/keys/eg.io.key.pem
+  #       cert: example/keys/eg.io.cert.pem
 apiEndpoints:
   api:
     host: localhost
     paths: "/ip"
   user:
+    methods: 'GET,POST,PUT' 
     host: localhost
-    paths: "/user/*"
+    paths: "/user*"
   shop:
+    methods: 'GET,POST,PUT' 
     host: localhost
     paths: "/healthz*"
+
 serviceEndpoints:
   httpbin:
     url: "https://httpbin.org"
