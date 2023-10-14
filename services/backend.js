@@ -17,6 +17,7 @@ const user = express();
 
 user
   .get('/user', (req, res, next) => {
+    console.log("headers", req.headers)
     res.send({ user: [ { name: 'linhtd', avatar: 'linhtd' }] });
     next();
   })
