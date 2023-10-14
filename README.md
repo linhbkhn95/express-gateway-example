@@ -1,24 +1,29 @@
 # express-gateway 
 
+Example uses `express-gateway` for microservice
+# Install and run app
+## Setup env nodejs 
+Step 1: clone project with command `git@github.com:linhbkhn95/express-gateway-example.git`
 
-### Links
+Step 2: install dependencies with `yarn` command
 
-### Version info
+Step 3: start project
+- Start gateway service
+  + Ensure port 80 is free, if run stop process use port 80
+  + Run service with command `node server`
 
-Example use express-gateway for microservice
-#install and start app
-# Setup env nodejs 
-step 1: clone project
-step 2: install project with yarn
-step 3: start project
-   + start service gateway : 
-        - check port 80 has run, if run stop process use port 80
-        - node serve
-   + start service : 
-      - cd /serives
-      - run node backend
+- Start backend services 
+  + Move into backend folder with `cd /serives`
+  + Run backend services with `node backend`
 
-see website, go to url :
+# Test
+With current config in this project we will have
    - http://localhost/user  for service user
    - http://localhost/healthz  fro service shop
 
+## Authentication
+- For `user` service, we already set config about auth. So, to can test, we can use example:
+```
+curl --location 'http://localhost/user' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.e30.79crTy8WpF6gVaCj3G7TsdU7JQzAMZCOuEf5Y8wmC4U'
+```

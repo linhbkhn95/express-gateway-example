@@ -45,6 +45,9 @@ policies:
   - oauth2
   - proxy
   - rate-limit
+  - jwt
+  - request-transformer
+
 pipelines:
   # default:
   #   apiEndpoints:
@@ -77,6 +80,18 @@ pipelines:
     apiEndpoints:
       - user
     policies:
+      - jwt:
+          action:
+            secretOrPublicKey: 'the-secret-key'
+            checkCredentialExistence: false
+      - log:
+          action:
+            message: '${req.method} ${req.originalUrl}'
+      - request-transformer:
+          action:
+            headers:
+              add:
+                requestID: 'requestID'
       - proxy:
           - action:
               serviceEndpoint: userService
