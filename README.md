@@ -18,12 +18,49 @@ Step 3: start project
 
 # Test
 With current config in this project we will have
-   - http://localhost/user  for service user
-   - http://localhost/healthz  fro service shop
+   - http://localhost/users  for service user
+   - http://localhost/shops  fro service shop
 
 ## Authentication
-- For `user` service, we already set config about auth. So, to can test, we can use example:
+- For `user` service, we already set config about auth.
 ```
-curl --location 'http://localhost/user' \
+- jwt:
+    action:
+      secretOrPublicKey: 'the-secret-key'
+      checkCredentialExistence: false
+- log:
+    action:
+      message: '${req.method} ${req.originalUrl}'
+- request-transformer:
+    action:
+      headers:
+        add:
+          requestID: 'requestID'
+```
+So, to can test, we can use example:
+```
+curl --location 'http://localhost/users/linhtd' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.e30.79crTy8WpF6gVaCj3G7TsdU7JQzAMZCOuEf5Y8wmC4U'
 ```
+
+## Rate limit
+- For `shop` api. We already had config for rate limit
+```
+shop:
+  apiEndpoints:
+    - shop
+  policies:
+    - rate-limit:
+      -
+        action:
+          max: 10
+          windowMs: 120000
+          rateLimitBy: "${req.hostname}"
+```
+
+So, all of shop's API wil be rate limit that we allow maximum 10 req/2min per client.
+
+ (*): Error when reached up rate limit
+  ```
+  Too many requests, please try again later.
+  ```
